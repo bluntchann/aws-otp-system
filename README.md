@@ -1,128 +1,84 @@
-🚀 AWS Serverless OTP Authentication System
+# 🔐 AWS Serverless OTP Authentication System
 
-This project implements a fully serverless OTP verification system using AWS cloud services.
-It generates a One-Time Password (OTP), stores it securely using DynamoDB TTL, and sends it via Amazon SES — with no servers to manage.
+A fully serverless One-Time Password (OTP) authentication platform designed using AWS cloud-native services.  
+This project demonstrates secure OTP generation, persistence, verification, and delivery via email — without managing servers.
 
-The frontend is built with Vue.js, and the backend is deployed using AWS SAM.
+---
 
-🧰 Tech Stack
-Layer	Technology
-Frontend	Vue.js
-Backend	AWS Lambda
-API Layer	Amazon API Gateway
-Database	Amazon DynamoDB (TTL enabled)
-Email Service	Amazon SES
-Infrastructure-as-Code	AWS SAM
-Authentication Flow	Email-based OTP
-🏗️ System Architecture
+## 📌 Overview
 
-📌 High-level design of the OTP workflow.
+This system enables users to:
 
-architecture.png
+✔ Request an OTP using their email  
+✔ Receive the OTP instantly via Amazon SES  
+✔ Validate OTP through API  
+✔ Automatically expire stored OTPs using DynamoDB TTL  
 
-🚦 Workflow
+Built using a fully event-driven serverless architecture.
 
-User enters their email in the frontend UI.
+---
 
-Frontend calls POST /otp/generate.
+## 🧰 Tech Stack
 
-Lambda generates OTP and stores it in DynamoDB with TTL.
+| Category | Technology |
+|---------|------------|
+| Frontend | Vue.js |
+| API Gateway | Amazon API Gateway |
+| Compute | AWS Lambda |
+| Database | Amazon DynamoDB (TTL Enabled) |
+| Email Service | Amazon SES |
+| IaC & Deployment | AWS Serverless Application Model (SAM) |
+| Programming Runtime | Node.js |
 
-DynamoDB Stream triggers a second Lambda.
+---
 
-Second Lambda sends OTP via SES.
+## 🏗 Architecture
 
-User enters OTP → Frontend sends request to /otp/verify.
+> Event-driven OTP system using Lambda, DynamoDB Streams, and SES.
 
-OTP is validated against DynamoDB.
+![System Architecture](./architecture.png)
 
-📁 Project Structure
-aws-serverless-otp-system/
+---
+
+## ⚙️ Flow Summary
+
+1. User enters an email in the frontend UI.
+2. Vue.js sends API call → `/otp/generate`
+3. Lambda generates OTP, stores record in DynamoDB with expiry.
+4. DynamoDB Stream triggers another Lambda.
+5. Lambda sends OTP email using Amazon SES.
+6. User enters OTP → `/otp/verify`
+7. Verification Lambda validates OTP and returns result.
+
+---
+
+## 📁 Project Structure
+
+```plaintext
+aws-otp-system/
 │
-├── backend/
-│   ├── template.yaml
+├── backend/                     # Lambda functions + SAM template
 │   ├── generate-otp/
+│   ├── send-email/
 │   ├── verify-otp/
-│   └── send-email/
+│   └── template.yaml
 │
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   ├── .env.example
-│   └── package.json
+├── frontend/                    # Vue.js client
+│   └── src/
 │
+├── architecture.png             # Architecture diagram
 └── README.md
 
-📦 Deployment — Backend (AWS SAM)
+
+---
+```
+## 🚀 Deployment Guide  
+
+### 🔧 Backend Deployment (AWS SAM)
+
+```sh
 cd backend
 sam build
-sam deploy
+sam deploy --guided
 
-
-Make sure SES sender & receiver emails are verified if using Sandbox mode.
-
-💻 Running the Frontend
-cd frontend
-npm install
-npm run serve
-
-
-Create .env file (based on .env.example):
-
-VUE_APP_API_BASE_URL=https://<your_api_id>.execute-api.<aws-region>.amazonaws.com/dev/otp
-
-🔐 IAM Roles Required
-Service	Permission
-Lambda logging	AWSLambdaBasicExecutionRole
-DynamoDB	AmazonDynamoDBFullAccess
-SES Email	AmazonSESFullAccess
-🧪 Testing via curl
-curl -X POST "<YOUR_API_URL>/otp/generate" \
-  -H "Content-Type: application/json" \
-  -d '{"email":"your_email@example.com"}'
-
-
-Expected response:
-
-{"message":"OTP generated","sessionId":"<UUID>"}
-
-🎓 What This Project Demonstrates
-
-Deploying serverless architecture with AWS SAM
-
-Event-driven processing using DynamoDB Streams
-
-Triggering transactional email using AWS SES
-
-Integrating AWS backend with a modern frontend framework (Vue.js)
-
-🚀 Future Enhancements
-
-SMS delivery using AWS SNS
-
-Multi-factor authentication support
-
-Throttling & rate-limiting with API Gateway
-
-CI/CD using GitHub Actions or Jenkins
-
-📌 Status
-Feature	Status
-API Deployment	✅
-OTP Generation	✅
-DynamoDB Storage + TTL	✅
-SES Email Delivery	✅
-UI Integration	✅
-⭐ Contribute
-
-⭐ Star the repository
-
-🐛 Open an issue
-
-🛠️ Submit a pull request
-
-👤 Author
-
-Amal Siby
-Cloud & DevOps Enthusiast ☁️
-📫 Email / LinkedIn link optional
+```
