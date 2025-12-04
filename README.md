@@ -1,9 +1,29 @@
-# Simple OTP service
+# AWS Serverless OTP System
 
-This repository contains a simple OTP service build with AWS Serverless services.
+A serverless OTP (One-Time Password) system built with:
 
-### Architecture:
+- AWS Lambda
+- Amazon API Gateway
+- Amazon DynamoDB
+- Amazon SES
+- AWS SAM
+- Vue.js frontend
 
-![Simple OTP Architecture](https://pubudu.dev/images/otp-service.png#center)
+## Features
 
-More information in this **[Blog Post](https://pubudu.dev/posts/simple-otp-service-with-aws-serverless)**
+- Generate OTP and store in DynamoDB with TTL
+- Send OTP via Amazon SES
+- Simple Vue.js UI to request and verify OTP
+- Uses AWS SAM for backend deployment
+
+## Backend (SAM)
+
+```bash
+cd backend
+sam build
+sam deploy
+
+## Frontend
+cd frontend
+npm install
+npm run serve

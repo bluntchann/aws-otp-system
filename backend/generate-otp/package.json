@@ -6,6 +6,11 @@
   "author": "SAM CLI",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.1692.0",
     "email-validator": "^2.0.4"
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": []
 }

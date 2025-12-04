@@ -1,1 +1,16 @@
-.vscode/*
+# Node modules
+node_modules/
+
+# AWS SAM build artifacts
+.aws-sam/
+
+# Local env files
+.env
+*/.env
+
+# SAM config (local)
+samconfig.toml
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
